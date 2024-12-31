@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Provider } from "@/provider";
 import { GlobalContext } from "@/context";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Netflix Clone",

@@ -1,11 +1,18 @@
 "use client";
 import Login from "@/components/ui/shared/login";
+import ManageAccount from "@/components/ui/shared/manage-account";
 import useGlobalContext from "@/context";
+import { useSession } from "next-auth/react";
 // import Login from "@/components/shared/login";
 
 const Page = () => {
   const { account } = useGlobalContext();
-  if (account === null) return <Login />;
+  const { data: session } = useSession();
+  console.log("data", session);
+
+  if (session === null) return <Login />;
+  if (account === null) return <ManageAccount />;
+
   return <div>Browse Page</div>;
 };
 export default Page;

@@ -1,6 +1,6 @@
 "use client";
 
-import { AccountProps, ChildProps, ContextType } from "@/.next/types";
+import { AccountProps, ChildProps, ContextType } from "@/types";
 import React, { createContext, useContext, useState } from "react";
 
 export const Context = createContext<ContextType | null>(null);

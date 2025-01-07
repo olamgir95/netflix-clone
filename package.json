@@ -16,6 +16,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-toast": "^1.1.5",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "assert": "^2.1.0",
     "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",

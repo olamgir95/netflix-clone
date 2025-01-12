@@ -8,7 +8,6 @@ const LoginAccountForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const onSubmit = (value: string) => {
     setIsLoading(true);
-    console.log(value);
   };
   return (
     <>

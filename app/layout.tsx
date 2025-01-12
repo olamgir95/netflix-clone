@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Provider } from "@/provider";
 import { GlobalContext } from "@/context";
 import "./globals.css";
+import { Toaster } from "./../components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Netflix Clone",
@@ -22,7 +23,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <GlobalContext>{children}</GlobalContext>
+          <GlobalContext>
+            {children}
+            <Toaster />
+          </GlobalContext>
         </Provider>
       </body>
     </html>

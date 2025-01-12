@@ -14,8 +14,6 @@ export async function POST(req: Request) {
     const isExist = await Account.findOne({ name });
     const allAccounts = await Account.find({ uid });
 
-    console.log(allAccounts);
-
     if (isExist) {
       return NextResponse.json({
         success: false,
@@ -33,7 +31,7 @@ export async function POST(req: Request) {
     const hashPin = await hash(pin, 10);
     const account = await Account.create({ name, pin: hashPin, uid });
 
-    return NextResponse.json({ success: true, account });
+    return NextResponse.json({ success: true, data: account });
   } catch (err) {
     return NextResponse.json({
       success: false,
@@ -42,7 +40,7 @@ export async function POST(req: Request) {
   }
 }
 
-// Get all acount
+// Get all account
 export async function GET(req: Request) {
   try {
     await connectToDatabase();
@@ -58,7 +56,7 @@ export async function GET(req: Request) {
 
     const accounts = await Account.find({ uid });
 
-    return NextResponse.json({ success: true, accounts });
+    return NextResponse.json({ success: true, data: accounts });
   } catch (err) {
     return NextResponse.json({
       success: false,
@@ -67,7 +65,7 @@ export async function GET(req: Request) {
   }
 }
 
-// Delete all acount
+// Delete an account
 export async function DELETE(req: Request) {
   try {
     await connectToDatabase();

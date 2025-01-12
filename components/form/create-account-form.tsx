@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { createAccountSchema } from "@/lib/validation";
@@ -16,22 +17,63 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PinInput from "react-pin-input";
+import axios from "axios";
+import { AccountProps, AccountResponse } from "@/types";
+import { toast } from "@/hooks/use-toast";
 
-const CreateAccountForm = () => {
+interface Props {
+  uid: string;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  setAccounts: Dispatch<SetStateAction<AccountProps[]>>;
+  accounts: AccountProps[];
+}
+const CreateAccountForm = ({ uid, setOpen, setAccounts, accounts }: Props) => {
   const form = useForm<z.infer<typeof createAccountSchema>>({
     resolver: zodResolver(createAccountSchema),
     defaultValues: { name: "", pin: "" },
   });
+
   const { isSubmitting } = form.formState;
+
   async function onSubmit(values: z.infer<typeof createAccountSchema>) {
-    console.log(values);
+    try {
+      const { data } = await axios.post<AccountResponse>("/api/account", {
+        ...values,
+        uid,
+      });
+      if (data.success) {
+        setOpen(false);
+        form.reset();
+        console.log(data);
+        setAccounts([...accounts, data.data as AccountProps]);
+        return toast({
+          title: "Account created successfully",
+          description: "Your account has been created successfully",
+        });
+      } else {
+        return toast({
+          title: "Error",
+          description: data.message,
+          variant: "destructive",
+        });
+      }
+    } catch (e) {
+      return toast({
+        title: "Error",
+        description: "An error occurred while creating your account",
+        variant: "destructive",
+      });
+    }
   }
+
   return (
     <>
       <h1 className={"text-white text-center font-bold text-3xl"}>
         Create your account
       </h1>
+
       <div className={"w-full h-[2px] bg-slate-500/20 mb-4"} />
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-3"}>
           <FormField
@@ -55,6 +97,7 @@ const CreateAccountForm = () => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name={"pin"}
@@ -95,6 +138,7 @@ const CreateAccountForm = () => {
               </FormItem>
             )}
           />
+
           <Button
             className={
               "w-full bg-red-600 hover:bg-red-700 flex justify-center items-center h-[56px] !text-white mt-4"
